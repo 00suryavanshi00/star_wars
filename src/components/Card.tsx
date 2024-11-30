@@ -1,8 +1,8 @@
 import { Card, Image, Text, Badge, Button, Group } from '@mantine/core';
 
-export function CardUI() {
+export function CardUI({ cardNumber} : {cardNumber : number}) {
   return (
-    <Card shadow="sm" padding="lg" radius="md" withBorder className='bg-yellow-400 rounded-3xl'>
+    <Card shadow="sm" padding="lg" radius="md" withBorder className='bg-yellow-400 rounded-3xl  hover:scale-110 hover:shadow-md transition-all ease-in-out'>
       <Card.Section>
         <Image
           src="src/images/peoplebackground.jpg"
@@ -15,13 +15,10 @@ export function CardUI() {
         <Text fw={500}>People</Text>
       </Group>
 
-      {/* <Text size="sm" c="dimmed">
-        Explore the star wars folks!!
-      </Text> */}
-
+{/* 
       <Button color="blue" fullWidth mt="md" radius="md">
-        Let's geek together!
-      </Button>
+      Card Number: {cardNumber}
+      </Button> */}
     </Card>
   );
 }

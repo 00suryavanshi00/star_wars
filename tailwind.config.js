@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       colors:{
-        scriptBlueColor : "#6B21A8"
+        vaderwhite : "#99A1AA"
       },
       fontFamily:{
         starjhol: ['starjhol']
@@ -18,6 +18,8 @@ module.exports = {
       animation: {
         bounce: "bounce-custom 1.5s infinite ease-in-out",
         fade: 'fadeOut 4s ease-in-out',
+        scrollUp: "scrollUp 2s linear forwards",
+        scrollDown: "scrollDown 2s linear forwards",
       },
       keyframes: {
         "bounce-custom": {
@@ -28,8 +30,18 @@ module.exports = {
           '0%': { opacity: 1 }, // Tailwind red-300 color directly referenced
           '100%': { opacity: 0 }, // Corrected transparent value
         },
+        "scrollUp": {
+          "0%": { transform: "translateY(0)" },
+          "100%": { transform: "translateY(-100%)" },
+        },
+        "scrollDown": {
+          "0%": { transform: "translateY(0)" },
+          "100%": { transform: "translateY(100%)" },
+        },
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwind-scrollbar-hide')
+  ],
 }
