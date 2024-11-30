@@ -3,8 +3,13 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from 'tailwindcss'
 
 export default defineConfig({
+
 	server: {
-		port: 5175
+		host: true,
+		port: 5175,
+		watch: {
+			usePolling: true,
+		}
 	},
 	plugins: [react()],
 	build: {
