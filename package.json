@@ -20,11 +20,13 @@
 		"@mantine/spotlight": "^6.0.5",
 		"@tanstack/react-query": "^4.28.0",
 		"@vitejs/plugin-react": "^4.0.4",
+		"axios": "^1.7.8",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-router-dom": "^6.8.0",
 		"react-signature-canvas": "^1.0.6",
 		"sass": "^1.64.2",
+		"tailwind-scrollbar-hide": "^1.1.7",
 		"zustand": "^4.3.2"
 	},
 	"devDependencies": {

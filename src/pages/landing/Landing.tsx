@@ -6,10 +6,20 @@ import { CardLoader } from '../../components/CardLoader';
 
 import VerticalScrollCardsRev from '../../components/VerticalScroll';
 import VerticalScrollCards from '../../components/VerticalScroll';
+import useGetResources from '../../hooks/useGetResources';
+import { SwapiRoot } from '../../interfaces/Root';
 
 
 
 const Landing = () => {
+	const { 
+		data: resources, 
+		error: error, 
+		isLoading: isLoading 
+	  } = useGetResources<SwapiRoot>('/');
+
+	  console.log("i'm inside the landing page ", resources)
+	  
 	return <>
 	<div className='flex items-center h-screen p-4'>
 		<div className='w-1/2 p-4'>
@@ -33,15 +43,16 @@ const Landing = () => {
 		</div>
 
 		</div>
-
+		
 		<div className='w-1/2 grid grid-cols-2 p-4 gap-4 mr-5'>
-			<CardUI/>
-			<CardUI/>
-			<CardUI/>
-			<CardUI/>
-			<CardUI/>
-			<CardUI/>
-		</div>
+		{ Object.entries(resources).map(([key, value]) => {
+			console.log(key,value)
+      return <CardUI key={key} cardName={key} cardUri={value} />
+}
+	)
+}
+
+</div>
 
 	</div>
 	</>;
