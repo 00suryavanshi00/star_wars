@@ -7,7 +7,7 @@ import { People } from "../interfaces/People";
 
 export default function useGetResources<T>(endpoint: string){
 
-    const [data, setData] = useState<T[]>([])
+    const [data, setData] = useState<T[] | null>(null)
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 

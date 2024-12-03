@@ -5,7 +5,7 @@ const YodaLoader = () => {
       <img
         src="src/images/baby-yoda.svg"
         alt="Loading..."
-        className="w-24 h-24 animate-bounce" // custom tailwind animation class
+        className="w-24 h-24 m-5 animate-bounce" // custom tailwind animation class
       />
 
   );
