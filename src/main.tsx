@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from './App';
 import Landing from './pages/landing/Landing';
 import './styles/abstracts/index.css'
+import ResourceScreen from './pages/Resource';
+import NotFound from './pages/NotFound';
 
 export const routes = [
 	{
@@ -14,7 +16,15 @@ export const routes = [
 			{
 				path: '/',
 				element: <Landing />
-			}
+			},
+			{
+				path: '/resources/:name',
+				element: <ResourceScreen />,
+			  },
+			  {
+				path: '*', // Catch-all for unmatched routes
+				element: <NotFound />,
+			  },
 		]
 	}
 ];

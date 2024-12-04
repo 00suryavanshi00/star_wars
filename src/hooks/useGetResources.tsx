@@ -5,7 +5,7 @@ import { Film } from "../interfaces/Film";
 import { People } from "../interfaces/People";
 
 
-export default function useGetResources<T>(endpoint: string){
+export default function useGetResources<T>(endpoint: string, page:number = 1){
 
     const [data, setData] = useState<T[] | null>(null)
     const [error, setError] = useState<string | null>(null);
@@ -26,8 +26,7 @@ export default function useGetResources<T>(endpoint: string){
 
 
             try{
-                const res = await apiClient.get<T[]>(endpoint);
-                console.log(res)
+                const res = await apiClient.get<T[]>(`${endpoint}?page=${page}`);
                 setData(res)
 
 
@@ -38,7 +37,7 @@ export default function useGetResources<T>(endpoint: string){
             }finally{
                 setIsLoading(false);
             }
-        },[endpoint] // so i'm adding endpoint here cuz i'm thinking of using this as a base class and handle all the get resources api calls from this itself
+        },[endpoint, page] // so i'm adding endpoint here cuz i'm thinking of using this as a base class and handle all the get resources api calls from this itself
     )
 
     useEffect(()=>{

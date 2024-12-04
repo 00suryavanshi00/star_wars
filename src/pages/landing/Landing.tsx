@@ -3,9 +3,6 @@ import { Card, Title } from "@mantine/core";
 import YodaLoader from "../../components/YodaLoader";
 import { CardUI } from "../../components/Card";
 import { CardLoader } from "../../components/CardLoader";
-
-import VerticalScrollCardsRev from "../../components/VerticalScroll";
-import VerticalScrollCards from "../../components/VerticalScroll";
 import useGetResources from "../../hooks/useGetResources";
 import { SwapiRoot } from "../../interfaces/Root";
 
@@ -16,7 +13,6 @@ const Landing = () => {
     isLoading: isLoading,
   } = useGetResources<SwapiRoot>("/");
 
-  console.log("i'm inside the landing page ", resources);
 
   return (
     <>{resources != null ?
@@ -39,7 +35,6 @@ const Landing = () => {
 
         <div className="w-1/2 grid grid-cols-2 p-4 gap-4 mr-5">
           { Object.entries(resources).map(([key, value]) => {
-            console.log("this is the landing page", key, value);
             return <CardUI key={key} cardName={key} cardUri={value} />;
           })
 		  
