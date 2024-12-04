@@ -1,49 +1,49 @@
-import { useCallback, useEffect, useState } from "react";
-import { SwapiRoot } from "../interfaces/Root";
-import apiClient from "../utils/apiclient";
-import { Film } from "../interfaces/Film";
-import { People } from "../interfaces/People";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
+const useGetResources = <T>(
+  endpoint: string, 
+  page: number = 1, 
+  searchQuery: string = ''
+) => {
+  const [data, setData] = useState<T | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-export default function useGetResources<T>(endpoint: string, page:number = 1){
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const baseUrl = 'https://swapi.dev/api';
+        
+        // Construct the URL with search and page parameters
+        const url = new URL(`${baseUrl}${endpoint}`);
+        url.searchParams.append('page', page.toString());
+        
+        // Add search parameter if it exists
+        if (searchQuery) {
+          url.searchParams.append('search', searchQuery);
+        }
 
-    const [data, setData] = useState<T[] | null>(null)
-    const [error, setError] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+        const response = await axios.get(url.toString());
+        setData(response.data);
+        setError(null);
+      } catch (err) {
+        setError(
+          axios.isAxiosError(err) 
+            ? err.response?.data?.detail || 'An error occurred' 
+            : 'An unexpected error occurred'
+        );
+        setData(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
+    fetchData();
+  }, [endpoint, page, searchQuery]);
 
-    // doing this so in case it's needed somewhere later and it's not rerendering if not required
+  return { data, error, isLoading };
+};
 
-    const fetchData = useCallback(
-        async() => {
-            setIsLoading(true);
-
-
-            if (!endpoint){
-                console.log("No endpoint was provided")
-                return 
-            }
-
-
-            try{
-                const res = await apiClient.get<T[]>(`${endpoint}?page=${page}`);
-                setData(res)
-
-
-            }catch(err){
-                const errorMessage = err instanceof Error ? err.message : 'Something went wrong bruhhh!!'
-                console.log(errorMessage)
-                setError(errorMessage)
-            }finally{
-                setIsLoading(false);
-            }
-        },[endpoint, page] // so i'm adding endpoint here cuz i'm thinking of using this as a base class and handle all the get resources api calls from this itself
-    )
-
-    useEffect(()=>{
-        fetchData()
-    },[fetchData])
-
-    return{data, error, isLoading}
-
-}
+export default useGetResources;

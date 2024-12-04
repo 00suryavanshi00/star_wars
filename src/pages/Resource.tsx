@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import useGetResources from "../hooks/useGetResources";
 import { CardLoader } from "../components/CardLoader";
@@ -10,13 +10,13 @@ import { Vehicle } from "../interfaces/Vehicles";
 import { Film } from "../interfaces/Film";
 import { People } from "../interfaces/People";
 import NameCard from "../components/NameCard";
-import { Pagination } from "@mantine/core";
 import CustomPagination from "../components/Pagination";
+import SearchForm from "../components/Search";
 
 const ResourceScreen: React.FC = () => {
   const { name } = useParams();
-  const location = useLocation();
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   type dataType = species | Planet | Starship | Vehicle | Film | People;
 
@@ -24,11 +24,18 @@ const ResourceScreen: React.FC = () => {
     data: resources,
     error,
     isLoading,
-  } = useGetResources<{ results: dataType[] }>(`/${name}`, currentPage);
+  } = useGetResources<{ results: dataType[]; count: number }>(
+    `/${name}`, 
+    currentPage, 
+    searchQuery
+  );
 
-  console.log('this is the name', name);
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    setCurrentPage(1); // Reset to first page when searching
+  };
 
-  // since film doesn't have name some extra logic needs to be done for it
+  // Type guard for films
   const isFilm = (item: dataType): item is Film => {
     return item.title !== undefined;
   };
@@ -46,30 +53,43 @@ const ResourceScreen: React.FC = () => {
     return (
       <div className="container mx-auto p-4 text-red-500">
         <h1>Error Loading Resource</h1>
-        <p>
-          {typeof error === "string" ? error : "An unknown error occurred."}
-        </p>
+        <p>{error}</p>
       </div>
     );
   }
 
+  // Render no resources found
   if (!resources?.results?.length) {
     return (
       <div className="container mx-auto p-4">
-        <h1 className="text-2xl">No resources found for "{name}"</h1>
+        <h1 className="text-2xl md:text-4xl lg:text-6xl font-bold text-yellow-400 font-starjhol italic text-center mt-4">
+          {name}
+        </h1>
+        <div className="mb-4">
+          <SearchForm name={name} onSearch={handleSearch} />
+        </div>
+        <div className="text-center text-xl">
+          {searchQuery 
+            ? `No results found for "${searchQuery}"` 
+            : `No resources found for "${name}"`}
+        </div>
       </div>
     );
   }
 
   // Render resource details
   return (
-    <div className="container mx-auto p-4">
-        <h1 className="text-2xl md:text-4xl lg:text-6xl font-bold text-yellow-400 font-starjhol italic text-center p-8 mb-7">
-            {name}
-          </h1>
+    <div className="container mx-auto p-4 flex flex-col justify-between h-screen">
+      <h1 className="text-2xl md:text-4xl lg:text-6xl font-bold text-yellow-400 font-starjhol italic text-center mt-4">
+        {name}
+      </h1>
+
+      <div className="mb-4">
+        <SearchForm name={name} onSearch={handleSearch} />
+      </div>
 
       <div className="grid grid-cols-2 gap-4">
-        {resources.results.map((item, index) =>
+        {resources.results.map((item: dataType, index: number) =>
           isFilm(item) ? (
             <NameCard name={item.title} key={index} />
           ) : (
@@ -78,10 +98,14 @@ const ResourceScreen: React.FC = () => {
         )}
       </div>
 
-      {/* since the swapi api is paginated for 10 per req */}
-      {resources.count > 10 ? <div className="flex justify-center mt-10">
-        <CustomPagination currentPage={1} totalPages={Math.ceil(resources.count / 10)} onPageChange={setCurrentPage}/>
-      </div> : null}
+      {/* Pagination */}
+      <div className="flex justify-center mt-10">
+        <CustomPagination
+          currentPage={currentPage}
+          totalPages={Math.ceil(resources.count / 10)}
+          onPageChange={setCurrentPage}
+        />
+      </div>
     </div>
   );
 };
