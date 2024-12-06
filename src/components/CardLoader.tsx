@@ -13,9 +13,9 @@ export function CardLoader() {
         <YodaLoader/>
       </Card.Section>
 
-      <Group position="center" mt="md" mb="xs">
+      {/* <Group position="center" mt="md" mb="xs">
         <Text fw={500}>Loading...</Text>
-      </Group>
+      </Group> */}
     </Card>
   );
 }
