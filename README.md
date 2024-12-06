@@ -5,7 +5,7 @@ The project is made on top of swapi ( star wars api ) and covers all the assignm
 
 ### Pointers for assignment:
 - I've used a theme of blue/ yellow to match the star wars theme. I wanted this to look as starwary as possible and you'll see it at small small places as well :)
-- ```Authentication Mechanism``` I wanted to be a little creative with implementing this. Usually auth is for keeping user specific details, since this is like a public api thing but assignment asked for it I wanted to implement it like it's in a real world scenario. I think seeing sign in/ sign up at the start is old now and I believe the UI should ask signin/signup when personalization of user specific data comes in picture. So i've implemented it just before the ResourceDetail page. 
+- ```Authentication Mechanism``` I wanted to be a little creative with implementing this. Usually auth is for keeping user specific details, since this is like a public api thing but assignment asked for it I wanted to implement it like it's in a real world scenario. I think seeing sign in/ sign up at the start is old now and I believe the UI should ask signin/signup when personalization of user specific data comes in picture. So i've implemented it just before the ResourceDetail page. Persistence across different sessions is achieved using firebase auth persistence https://firebase.google.com/docs/auth/web/auth-state-persistence
 - ```Resource List Page``` This is also done in the file Resource.tsx showing all the resources swapi api has to offer.
 - ```Resource Detail Page``` This is also done in the file with the same name.
 - ```Deep Linking``` Used every where in the project for navigation
