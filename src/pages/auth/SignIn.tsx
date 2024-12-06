@@ -29,9 +29,7 @@ function SignIn() {
        message: 'Logged in successfully!',
        color: 'green'
      });
- 
-     // Navigate to the intended destination
-     // If there was a specific item ID, include it in the navigation
+     
      if (from.includes('/resources/') && itemId) {
        const fullPath = `${from}/${itemId}`;
        navigate(fullPath);

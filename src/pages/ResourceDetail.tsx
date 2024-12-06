@@ -1,8 +1,6 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
-
-// Interfaces
 import { species } from "../interfaces/Species";
 import { Planet } from "../interfaces/Planets";
 import { Starship } from "../interfaces/Starships";
@@ -11,9 +9,10 @@ import { Film } from "../interfaces/Film";
 import { People } from "../interfaces/People";
 
 
-// Components
+
 import { CardLoader } from '../components/CardLoader';
 import useGetResourceDetail from '../hooks/useGetResourcesDetail';
+import { resourceImageRoutes } from '../utils/imagemap';
 
 type ResourceType = species | Planet | Starship | Vehicle | Film | People;
 
@@ -57,7 +56,6 @@ const ResourceDetailScreen = () => {
       </div>
     );
 
-    // Detailed type checking and rendering
     if (name === 'films' && 'title' in resource) {
       // Film
       const film = resource as Film;
@@ -136,8 +134,13 @@ const ResourceDetailScreen = () => {
   };
 
   return (
-    <div className="min-h-screen  flex flex-col">
-      {/* Header with Back Button */}
+    <div className="min-h-screen  flex flex-col" style={{
+        backgroundImage: `url(${resourceImageRoutes.get("background")})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        minHeight: "100vh", 
+      }}>
+
       <div className="sticky top-0 bg-black/40 backdrop-blur-lg z-10 p-4 flex items-center border-b border-yellow-500/30">
         <button 
           onClick={goBack} 
@@ -151,14 +154,14 @@ const ResourceDetailScreen = () => {
         </h1>
       </div>
 
-      {/* Scrollable Content Area */}
+
       <div className="flex-grow overflow-y-auto p-6 space-y-4">
         <div className="max-w-2xl mx-auto bg-black/40 backdrop-blur-lg rounded-2xl shadow-2xl border border-yellow-500/30 p-6 text-sm md:text-xl">
           {renderResourceDetails()}
         </div>
       </div>
 
-      {/* Footer */}
+
       <div className="sticky bottom-0  p-4 text-center text-blue-200 text-sm text-opacity-50">
         Star Wars Encyclopedia - Powered by SWAPI ( and Sanskar )
       </div>

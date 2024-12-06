@@ -3,6 +3,8 @@ import { CardLoader } from "../../components/CardLoader";
 import { CardUI } from "../../components/Card";
 import useGetResources from "../../hooks/useGetResources";
 import { SwapiRoot } from "../../interfaces/Root";
+import { BackgroundImage } from "@mantine/core";
+import { resourceImageRoutes } from "../../utils/imagemap";
 
 const Landing: FC = () => {
   const { data: resources, error, isLoading } = useGetResources<SwapiRoot>("/");
@@ -29,9 +31,25 @@ const Landing: FC = () => {
   }
 
   return (
-    <div className="flex flex-col  items-center  h-full p-4 bg-gradient-to-br from-yellow-300/50 via-blue-900/80 to-blue-950">
+    <div
+      className="flex flex-col items-center h-full p-4 relative" // 
+      style={{
+        backgroundImage: `url(${resourceImageRoutes.get("background")})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        minHeight: "100vh", 
+      }}
+    >
+		{/* gradient overlay on top had to do it inline styling couldn't find another way to overlay it ontop of a background  */}
+      <div
+        className="absolute inset-0 bg-gradient-to-br from-yellow-300/50 via-blue-900/80 to-blue-950"
+        style={{
+          zIndex: 0, 
+        }}
+      />
+      
 
-      <div className="w-full  p-4 text-center ">
+      <div className="relative z-10 w-full p-4 text-center">
         <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-yellow-400 font-starjhol italic leading-tight">
           Explore the Galaxy of Star Wars!
         </h1>
@@ -48,8 +66,7 @@ const Landing: FC = () => {
         </div>
       </div>
 
-
-      <div className="w-full lg:w-2/3 grid grid-cols-2 md:grid-cols-3  gap-4 p-4 mt-8 lg:mt-0">
+      <div className="w-full lg:w-2/3 grid grid-cols-2 md:grid-cols-3 gap-4 p-4 mt-8 lg:mt-0">
         {Object.entries(resources).map(([key, value]) => (
           <CardUI key={key} cardName={key} cardUri={value} />
         ))}

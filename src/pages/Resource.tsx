@@ -13,9 +13,10 @@ import NameCard from "../components/NameCard";
 import CustomPagination from "../components/Pagination";
 import SearchForm from "../components/Search";
 
-import { notifications } from "@mantine/notifications"; // Optional: for showing notifications
+import { notifications } from "@mantine/notifications"; 
 import { useUserStore } from "../store/app.store";
 import { ChevronLeft } from "lucide-react";
+import { resourceImageRoutes } from "../utils/imagemap";
 
 const ResourceScreen: React.FC = () => {
   const { name } = useParams();
@@ -23,7 +24,7 @@ const ResourceScreen: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  // Get the user from Zustand store
+
   const { user } = useUserStore();
 
   type dataType = species | Planet | Starship | Vehicle | Film | People;
@@ -54,20 +55,20 @@ const ResourceScreen: React.FC = () => {
       return matches ? matches[1] : null;
     };
 
-    // Check if user is authenticated
+
     if (!user) {
-      // If not authenticated, show notification and redirect to sign-in
+
       notifications.show({
         title: 'Authentication Required',
         message: 'Please sign in to access resource details',
         color: 'yellow'
       });
       
-      // Redirect to sign-in page
+// redirect
       navigate('/auth/signin', { 
         state: { 
-          from: `/resources/${name}`, // Store the intended destination
-          itemId: extractId(item.url) // Pass the item ID to continue navigation after sign-in
+          from: `/resources/${name}`, 
+          itemId: extractId(item.url) 
         } 
       });
       return;
@@ -89,7 +90,7 @@ const ResourceScreen: React.FC = () => {
     console.log('Current User:', user);
   }, [name, resources, isLoading, error, user]);
 
-  // Render loading state
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -98,7 +99,7 @@ const ResourceScreen: React.FC = () => {
     );
   }
 
-  // Render error state
+
   if (error) {
     return (
       <div className="container mx-auto p-4 text-red-500">
@@ -109,7 +110,7 @@ const ResourceScreen: React.FC = () => {
     );
   }
 
-  // Render no resources found
+//   render if resouces not found
   if (!resources?.results?.length) {
     return (
       <div className="container mx-auto p-4">
@@ -129,12 +130,17 @@ const ResourceScreen: React.FC = () => {
     );
   }
 
-  // Render resource details
+  // render resource details
   return (
-<div className="container mx-auto max-w-screen-xl p-4 flex flex-col justify-between min-h-screen">
-  {/* Header */}
+<div className=" p-4 flex flex-col justify-between min-h-screen" style={{
+        backgroundImage: `url(${resourceImageRoutes.get("background")})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        minHeight: "100vh", 
+      }}>
+
   <div className="flex items-center justify-between mb-6">
-    {/* Back Button */}
+
     <button
       onClick={goBack}
       className="flex items-center text-yellow-400 hover:text-yellow-300"
@@ -142,19 +148,19 @@ const ResourceScreen: React.FC = () => {
       <ChevronLeft className="mr-2 w-6 h-6" />
     </button>
 
-    {/* Title */}
+
     <h1 className="flex-grow text-xl md:text-3xl lg:text-4xl font-bold text-yellow-400 font-starjhol italic text-center">
       {name}
     </h1>
   </div>
 
-  {/* Search Form */}
+
   <div className="mb-6">
     <SearchForm name={name} onSearch={handleSearch} />
   </div>
 
-  {/* Resource Grid */}
-  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-6">
     {resources.results.map((item: dataType, index: number) => (
       <div
         key={index}
@@ -170,7 +176,7 @@ const ResourceScreen: React.FC = () => {
     ))}
   </div>
 
-  {/* Pagination */}
+
   <div className="flex justify-center mt-8">
     <CustomPagination
       currentPage={currentPage}

@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+
+
 module.exports = {
   content: [
     "./index.html",
@@ -13,7 +15,8 @@ module.exports = {
         starjhol: ['starjhol']
       },
       backgroundImage: {
-        'space-background': "url('src/images/nightbackground.jpg')",
+        // 'space-background': "url('public/images/nightbackground.jpg')",
+        // 'space-background' : `url(${resourceImageRoutes.get(background)`
       },
       animation: {
         bounce: "bounce-custom 1.5s infinite ease-in-out",
