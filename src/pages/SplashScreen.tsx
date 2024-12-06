@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import darthvadersrc from '../images/darthvader.mp4';
 
 interface SplashScreenProps {
   onComplete: () => void; 
@@ -35,7 +36,7 @@ const SplashScreen = ({ onComplete } : SplashScreenProps) => {
     loop
     muted
   >
-    <source src="src/images/darthvader.mp4" type="video/mp4" />
+    <source src={darthvadersrc} type="video/mp4" />
     Your browser does not support the video tag.
   </video>
 

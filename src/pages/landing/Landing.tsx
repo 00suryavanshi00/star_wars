@@ -16,7 +16,7 @@ const Landing = () => {
 
   return (
     <>{resources != null ?
-      <div className="flex items-center h-screen p-4">
+      <div className="flex items-center h-screen p-4  bg-gradient-to-br from-yellow-300/50 via-blue-900/80 to-blue-950">
         <div className="w-1/2 p-4">
           <h1 className="text-2xl md:text-4xl lg:text-6xl font-bold text-yellow-400 font-starjhol italic text-center">
             Explore the world of star wars!
