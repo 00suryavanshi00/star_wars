@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Input, PasswordInput } from "@mantine/core";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AtSign, ChromeIcon, Lock, LogInIcon } from "lucide-react";
@@ -13,14 +13,22 @@ import babyyodaSrc from "../../images/baby-yoda.svg";
 import { useUserStore } from "../../store/app.store";
 
 function SignIn() {
-  const { setUser } = useUserStore();
+
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, setUser } = useUserStore();
 
 
    // Get the intended destination from location state
    const from = location.state?.from || '/';
    const itemId = location.state?.itemId;
+   const fullPath = `${from}/${itemId}`;
+
+   useEffect(() => {
+    if (user) {
+      navigate(fullPath);  // redirecting and persisting logins
+    }
+  }, [user, navigate]);
  
    const handleAuthSuccess = (user) => {
      setUser(user);
@@ -31,7 +39,7 @@ function SignIn() {
      });
      
      if (from.includes('/resources/') && itemId) {
-       const fullPath = `${from}/${itemId}`;
+       
        navigate(fullPath);
      } else {
        navigate(from);
