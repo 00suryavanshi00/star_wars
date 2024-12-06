@@ -7,6 +7,8 @@ import Landing from './pages/landing/Landing';
 import './styles/abstracts/index.css'
 import ResourceScreen from './pages/Resource';
 import NotFound from './pages/NotFound';
+import SignIn from './pages/auth/SignIn';
+import ResourceDetailScreen from './pages/ResourceDetail';
 
 export const routes = [
 	{
@@ -20,6 +22,15 @@ export const routes = [
 			{
 				path: '/resources/:name',
 				element: <ResourceScreen />,
+			  },
+			  {
+				path: '/auth/signin',
+				element: <SignIn/>
+			  },
+			  {
+				path: '/resources/:name/:id',
+				// path: 'test',
+				element: <ResourceDetailScreen/>
 			  },
 			  {
 				path: '*', // Catch-all for unmatched routes

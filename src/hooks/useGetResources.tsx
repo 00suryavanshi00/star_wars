@@ -1,49 +1,57 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useCallback, useEffect, useState } from "react";
+import apiClient from "../utils/apiclient";
 
-const useGetResources = <T>(
+export interface SwapiResponse<T> {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+}
+
+export default function useGetResources<T>(
   endpoint: string, 
   page: number = 1, 
   searchQuery: string = ''
-) => {
-  const [data, setData] = useState<T | null>(null);
+) {
+  const [data, setData] = useState<SwapiResponse<T> | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const fetchData = useCallback(
+    async () => {
       setIsLoading(true);
-      try {
-        const baseUrl = 'https://swapi.dev/api';
-        
-        // Construct the URL with search and page parameters
-        const url = new URL(`${baseUrl}${endpoint}`);
-        url.searchParams.append('page', page.toString());
-        
-        // Add search parameter if it exists
-        if (searchQuery) {
-          url.searchParams.append('search', searchQuery);
-        }
 
-        const response = await axios.get(url.toString());
-        setData(response.data);
-        setError(null);
+      if (!endpoint) {
+        console.log("No endpoint was provided");
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        // Construct the URL with page and optional search query
+        const url = searchQuery 
+          ? `${endpoint}?page=${page}&search=${searchQuery}` 
+          : `${endpoint}?page=${page}`;
+
+        const res = await apiClient.get<SwapiResponse<T>>(url);
+        setData(res);
       } catch (err) {
-        setError(
-          axios.isAxiosError(err) 
-            ? err.response?.data?.detail || 'An error occurred' 
-            : 'An unexpected error occurred'
-        );
-        setData(null);
+        const errorMessage = err instanceof Error 
+          ? err.message 
+          : 'Something went wrong bruhhh!!';
+        
+        console.error('Fetch Error:', errorMessage);
+        setError(errorMessage);
       } finally {
         setIsLoading(false);
       }
-    };
+    },
+    [endpoint, page, searchQuery]
+  );
 
+  useEffect(() => {
     fetchData();
-  }, [endpoint, page, searchQuery]);
+  }, [fetchData]);
 
   return { data, error, isLoading };
-};
-
-export default useGetResources;
+}
